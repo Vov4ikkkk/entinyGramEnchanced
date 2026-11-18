@@ -1,0 +1,146 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Wed, 18 Nov 2026 12:00:00 +0000
+Subject: Optional native media picker: never ask for gallery access, the
+ attach menu opens the Android picker instead.
+
+---
+ .../src/main/java/org/telegram/ui/ChatActivity.java         | 1 +
+ .../java/org/telegram/ui/Components/ChatAttachAlert.java    | 6 +++++-
+ .../ui/Components/ChatAttachAlertDocumentLayout.java        | 5 ++++-
+ .../telegram/ui/Components/ChatAttachAlertPhotoLayout.java  | 6 +++++-
+ .../java/org/telegram/ui/Components/GalleryEmptyView.java   | 6 ++++++
+ .../src/main/java/org/telegram/ui/DialogsActivity.java      | 4 ++--
+ 6 files changed, 23 insertions(+), 5 deletions(-)
+
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
+@@ -14975,6 +14975,7 @@ public class ChatActivity extends BaseFragment implements
+                 FileLog.e(e);
+             }
+         } else if (which == attach_gallery) {
++            if (desu.inugram.helpers.media.MediaPickerHelper.launchNativePicker(this)) return;
+             final Activity activity = getParentActivity();
+             if (Build.VERSION.SDK_INT >= 33) {
+                 if (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlert.java b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlert.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlert.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlert.java
+@@ -1071,7 +1071,7 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
+     public EditTextEmoji topCommentTextView;
+     public ImageView topCommentMoveButton;
+ 
+-    protected int avatarPicker;
++    public int avatarPicker;
+     protected boolean avatarSearch;
+     protected Utilities.Callback0Return<PhotoViewer.PlaceProviderObject> avatarWithBulletin;
+     protected boolean typeButtonsAvailable;
+@@ -2811,6 +2811,10 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
+                     if (!documentsEnabled && checkCanRemoveRestrictionsByBoosts()) {
+                         return;
+                     }
++                    if (desu.inugram.helpers.media.MediaPickerHelper.skipFilesPermission(this)) {
++                        openDocumentsLayout(true);
++                        return;
++                    }
+                     if (Build.VERSION.SDK_INT >= 33) {
+                         if (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED ||
+                                 activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED) {
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertDocumentLayout.java b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertDocumentLayout.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertDocumentLayout.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertDocumentLayout.java
+@@ -429,7 +429,10 @@ public class ChatAttachAlertDocumentLayout extends ChatAttachAlert.AttachAlertLa
+                     }
+                     delegate.startDocumentSelectActivity();
+                 } else if (file == null) {
+-                    if (item.icon == R.drawable.files_gallery) {
++                    if (item.icon == R.drawable.files_gallery && desu.inugram.helpers.media.MediaPickerHelper.useNativePicker(parentAlert)) {
++                        if (!parentAlert.checkEditingCaptionLimit()) return;
++                        delegate.startDocumentSelectActivity();
++                    } else if (item.icon == R.drawable.files_gallery) {
+                         HashMap<Object, Object> selectedPhotos = new HashMap<>();
+                         ArrayList<Object> selectedPhotosOrder = new ArrayList<>();
+                         ChatActivity chatActivity;
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertPhotoLayout.java b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertPhotoLayout.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertPhotoLayout.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/ChatAttachAlertPhotoLayout.java
+@@ -943,6 +943,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
+                     }
+                     return;
+                 } else if (noGalleryPermissions) {
++                    if (desu.inugram.helpers.media.MediaPickerHelper.launchNativePicker(parentAlert)) return;
+                     if (Build.VERSION.SDK_INT >= 33) {
+                         try {
+                             fragment.getParentActivity().requestPermissions(new String[]{Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_IMAGES}, BasePermissionsActivity.REQUEST_CODE_EXTERNAL_STORAGE);
+@@ -1538,6 +1539,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
+ 
+ 
+     private void requestGalleryPermission() {
++        if (desu.inugram.helpers.media.MediaPickerHelper.launchNativePicker(parentAlert)) return;
+         try {
+             if (Build.VERSION.SDK_INT >= 33) {
+                 parentAlert.baseFragment.getParentActivity().requestPermissions(new String[]{Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_IMAGES}, BasePermissionsActivity.REQUEST_CODE_EXTERNAL_STORAGE);
+@@ -2462,7 +2464,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
+                 if (noCameraPermissions = (fragment.getParentActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+                     if (request) {
+                         try {
+-                            parentAlert.baseFragment.getParentActivity().requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, 17);
++                            parentAlert.baseFragment.getParentActivity().requestPermissions(desu.inugram.helpers.media.MediaPickerHelper.useNativePicker(parentAlert) ? new String[]{Manifest.permission.CAMERA} : new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, 17);
+                         } catch (Exception ignore) {
+ 
+                         }
+@@ -3281,6 +3283,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
+     }
+ 
+     private boolean isNoGalleryPermissions() {
++        if (desu.inugram.helpers.media.MediaPickerHelper.useNativePicker(parentAlert)) return true;
+         Activity activity = AndroidUtilities.findActivity(getContext());
+         if (activity == null) {
+             activity = parentAlert.baseFragment.getParentActivity();
+@@ -4639,6 +4642,7 @@ public class ChatAttachAlertPhotoLayout extends ChatAttachAlert.AttachAlertLayou
+                     emptyView.isClickable();
+                     emptyView.doOnCameraAccess(ChatAttachAlertPhotoLayout.this::openCameraWithPermissionCheck);
+                     emptyView.doOnGalleryAccessClick(ChatAttachAlertPhotoLayout.this::requestGalleryPermission);
++                    desu.inugram.helpers.media.MediaPickerHelper.bindEmptyView(parentAlert, emptyView);
+                     emptyView.doOnEmojiButton(d -> {
+                         showAvatarConstructorFragment(null, null, d);
+                         parentAlert.dismiss();
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/GalleryEmptyView.java b/TMessagesProj/src/main/java/org/telegram/ui/Components/GalleryEmptyView.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Components/GalleryEmptyView.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/GalleryEmptyView.java
+@@ -122,6 +122,12 @@ public class GalleryEmptyView extends LinearLayout {
+         useAnEmojiButton.setVisibility(visible ? VISIBLE : GONE);
+     }
+ 
++    public void inu_setTexts(CharSequence title, CharSequence subtitle, CharSequence button) {
++        titleTextView.setText(title);
++        subtitleTextView.setText(subtitle);
++        galleryAccessButton.setText(button, false);
++    }
++
+     public void doOnGalleryAccessClick(Runnable listener) {
+         galleryAccessButton.setOnClickListener(v -> listener.run());
+     }
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
+@@ -10818,10 +10818,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+             permissons.add(Manifest.permission.GET_ACCOUNTS);
+         }
+         if (Build.VERSION.SDK_INT >= 33) {
+-            if (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
++            if (!desu.inugram.InuConfig.NATIVE_MEDIA_PICKER.getValue() && activity.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                 permissons.add(Manifest.permission.READ_MEDIA_IMAGES);
+             }
+-            if (activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED) {
++            if (!desu.inugram.InuConfig.NATIVE_MEDIA_PICKER.getValue() && activity.checkSelfPermission(Manifest.permission.READ_MEDIA_VIDEO) != PackageManager.PERMISSION_GRANTED) {
+                 permissons.add(Manifest.permission.READ_MEDIA_VIDEO);
+             }
+             if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

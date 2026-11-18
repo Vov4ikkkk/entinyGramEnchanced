@@ -514,6 +514,7 @@ object Schemas {
                 onChange = { _, new -> if (new) WidgetMedia.inu_onAutoplayDisabled() },
             )
             toggle(InuConfig.FORCE_RELAY_CALLS, R.string.InuForceRelayCalls, R.string.InuForceRelayCallsInfo)
+            toggle(InuConfig.NATIVE_MEDIA_PICKER, R.string.InuNativeMediaPicker, R.string.InuNativeMediaPickerInfo)
         }
         section(R.string.InuStripTrackingParams) {
             toggle(InuConfig.STRIP_TRACKING_PARAMS_ON_OPEN, R.string.InuStripTrackingParamsOnOpen, onChange = { page, _ -> page.refresh() })

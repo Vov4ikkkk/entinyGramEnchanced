@@ -1170,6 +1170,9 @@ val MEMORY_TRIM = BoolItem("memory_trim", true)
     val FORCE_RELAY_CALLS = BoolItem("force_relay_calls", false)
 
     @JvmField
+    val NATIVE_MEDIA_PICKER = BoolItem("native_media_picker", false)
+
+    @JvmField
     val PRESENCE_LOGGER_NOTIFY = BoolItem("presence_logger_notify", false)
 
     class PresenceLogsTtlItem : IntItem("presence_logs_ttl", NEVER) {

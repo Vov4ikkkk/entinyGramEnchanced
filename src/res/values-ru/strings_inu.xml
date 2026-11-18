@@ -823,6 +823,11 @@
     <string name="InuForceNoVibrationInfo">Отключает виброотклик, вибрацию в приложении и уведомлениях, даже если она включена в настройках Telegram.</string>
     <string name="InuForceRelayCalls">Принудительный релей звонков</string>
     <string name="InuForceRelayCallsInfo">Направляет звонки через релей-серверы Telegram, никогда напрямую, скрывая ваш настоящий IP-адрес.</string>
+    <string name="InuNativeMediaPicker">Системный выбор медиа</string>
+    <string name="InuNativeMediaPickerInfo">Не запрашивать доступ ко всем фото и видео. Меню вложений открывает системный выбор Android, и приложение получает только выбранные файлы.</string>
+    <string name="InuNativeMediaPickerTitle">Приватная галерея</string>
+    <string name="InuNativeMediaPickerText">Telegram не видит ваши фото. Выберите только то, что хотите отправить.</string>
+    <string name="InuNativeMediaPickerButton">Выбрать фото и видео</string>
     <string name="InuForceTranslate">Принудительный перевод</string>
     <string name="InuForceTranslateInfo">Переводить, даже если Telegram считает текст вашим языком или он в списке «Не переводить».</string>
     <string name="InuFormatting">Форматирование</string>

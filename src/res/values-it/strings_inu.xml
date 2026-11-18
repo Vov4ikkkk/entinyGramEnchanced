@@ -831,6 +831,11 @@ Sistema: %6$s
     <string name="InuForceNoVibrationInfo">Disattiva la vibrazione aptica, dell\'app e delle notifiche, anche se attivata nelle impostazioni di Telegram.</string>
     <string name="InuForceRelayCalls">Forza le chiamate tramite relay</string>
     <string name="InuForceRelayCallsInfo">Instrada le chiamate tramite i server relay di Telegram, mai peer-to-peer, nascondendo il tuo IP reale.</string>
+    <string name="InuNativeMediaPicker">Selettore multimediale nativo</string>
+    <string name="InuNativeMediaPickerInfo">Non chiedere l\'accesso a tutte le foto e i video. Il menu allegati apre il selettore di Android e vengono condivisi solo i file scelti.</string>
+    <string name="InuNativeMediaPickerTitle">Galleria privata</string>
+    <string name="InuNativeMediaPickerText">Telegram non può vedere le tue foto. Scegli solo ciò che vuoi inviare.</string>
+    <string name="InuNativeMediaPickerButton">Scegli foto e video</string>
     <string name="InuForceTranslate">Forza la traduzione</string>
     <string name="InuForceTranslateInfo">Traduci anche quando Telegram ritiene che il testo sia nella tua lingua o nell\'elenco «Non tradurre».</string>
     <string name="InuFormatting">Formattazione</string>

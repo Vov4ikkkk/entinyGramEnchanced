@@ -2,15 +2,19 @@
 
 package desu.inugram.helpers.media
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
+import android.os.ext.SdkExtensions
 import android.provider.MediaStore
+import desu.inugram.InuConfig
 import org.telegram.messenger.AndroidUtilities
 import org.telegram.messenger.ApplicationLoader
+import org.telegram.messenger.BuildVars
 import org.telegram.messenger.FileLoader
 import org.telegram.messenger.FileLog
 import org.telegram.messenger.LocaleController
@@ -23,11 +27,73 @@ import org.telegram.ui.ChatActivity
 import org.telegram.ui.Components.BulletinFactory
 import org.telegram.ui.Components.ChatAttachAlert
 import org.telegram.ui.Components.ChatAttachAlertPhotoLayout
+import org.telegram.ui.Components.GalleryEmptyView
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.ceil
 
 object MediaPickerHelper {
+    @JvmStatic
+    fun useNativePicker(alert: ChatAttachAlert?): Boolean =
+        InuConfig.NATIVE_MEDIA_PICKER.value && alert != null && alert.avatarPicker == 0 && alert.baseFragment is ChatActivity
+
+    @JvmStatic
+    fun skipFilesPermission(alert: ChatAttachAlert?): Boolean =
+        useNativePicker(alert) && Build.VERSION.SDK_INT >= 29 && !BuildVars.NO_SCOPED_STORAGE
+
+    @JvmStatic
+    fun launchNativePicker(alert: ChatAttachAlert?): Boolean {
+        if (alert == null || !useNativePicker(alert)) return false
+        if (!startNativePicker(alert.baseFragment as ChatActivity, alert.maxSelectedPhotos)) return false
+        alert.dismiss(true)
+        return true
+    }
+
+    @JvmStatic
+    fun launchNativePicker(fragment: ChatActivity): Boolean =
+        InuConfig.NATIVE_MEDIA_PICKER.value && startNativePicker(fragment, -1)
+
+    @JvmStatic
+    fun bindEmptyView(alert: ChatAttachAlert?, view: GalleryEmptyView) {
+        if (!useNativePicker(alert)) return
+        view.inu_setTexts(
+            LocaleController.getString(R.string.InuNativeMediaPickerTitle),
+            LocaleController.getString(R.string.InuNativeMediaPickerText),
+            LocaleController.getString(R.string.InuNativeMediaPickerButton),
+        )
+    }
+
+    private fun startNativePicker(fragment: ChatActivity, max: Int): Boolean {
+        return try {
+            fragment.startActivityForResult(nativePickerIntent(max), 1)
+            true
+        } catch (e: Exception) {
+            FileLog.e(e)
+            false
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun nativePickerIntent(max: Int): Intent {
+        if (hasSystemPhotoPicker()) {
+            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
+            if (max != 1) {
+                val limit = MediaStore.getPickImagesMaxLimit()
+                intent.putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, if (max in 2..limit) max else limit)
+            }
+            return intent
+        }
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "*/*"
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/*", "video/*"))
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, max != 1)
+        return intent
+    }
+
+    private fun hasSystemPhotoPicker(): Boolean = Build.VERSION.SDK_INT >= 33 ||
+        Build.VERSION.SDK_INT >= 30 && SdkExtensions.getExtensionVersion(Build.VERSION_CODES.R) >= 2
+
     @JvmStatic
     fun launchPicker(alert: ChatAttachAlert): Boolean {
         if (alert.baseFragment !is ChatActivity) return false

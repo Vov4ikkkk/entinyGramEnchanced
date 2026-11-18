@@ -29,6 +29,7 @@ entinygram is built on top of [inugram](https://github.com/teidesu/inugram). for
 - **read time & remembered last seen** — when the other side read your private messages, and the last online time that survives hidden status
 - **presence logger** — per-contact online and offline history with notifications
 - **force relay calls** — route calls through telegram servers to hide your ip
+- **native media picker** — telegram never asks for access to your whole gallery. the attach menu opens the android photo picker and only the files you pick are shared
 - **sign-up privacy** — ask telegram not to tell contacts when you register a new number
 - **chat preview buttons** — open chat and close buttons in the press-and-hold chat preview menu
 - **adblock & content filtering** — hide sponsored messages, proxy sponsor chat and business bot banner

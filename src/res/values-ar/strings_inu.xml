@@ -822,6 +822,11 @@
     <string name="InuForceNoVibrationInfo">يوقف الاهتزاز اللمسي واهتزاز التطبيق والإشعارات حتى لو كان مفعلًا في إعدادات Telegram.</string>
     <string name="InuForceRelayCalls">فرض ترحيل المكالمات</string>
     <string name="InuForceRelayCallsInfo">توجيه المكالمات عبر خوادم الترحيل التابعة لـ Telegram، وليس نظير إلى نظير أبداً، لإخفاء عنوان IP الحقيقي.</string>
+    <string name="InuNativeMediaPicker">منتقي الوسائط الأصلي</string>
+    <string name="InuNativeMediaPickerInfo">لا تطلب الوصول إلى كل الصور والفيديوهات. تفتح قائمة المرفقات منتقي أندرويد ولا تتم مشاركة سوى الملفات التي تختارها.</string>
+    <string name="InuNativeMediaPickerTitle">معرض خاص</string>
+    <string name="InuNativeMediaPickerText">لا يستطيع تيليجرام رؤية صورك. اختر فقط ما تريد إرساله.</string>
+    <string name="InuNativeMediaPickerButton">اختيار الصور والفيديوهات</string>
     <string name="InuForceTranslate">فرض الترجمة</string>
     <string name="InuForceTranslateInfo">الترجمة حتى لو اعتقد Telegram أن النص بلغتك أو ضمن قائمة \"عدم الترجمة\".</string>
     <string name="InuFormatting">التنسيق</string>

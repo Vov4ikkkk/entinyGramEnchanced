@@ -818,6 +818,11 @@
     <string name="InuForceNoVibrationInfo">Telegramの設定で有効になっていても、触覚フィードバック、アプリ内の振動、通知の振動をオフにします。</string>
     <string name="InuForceRelayCalls">通話を強制リレー化</string>
     <string name="InuForceRelayCallsInfo">通話を常にTelegramのリレーサーバー経由にし、ピアツーピアを避けて実際のIPを隠します。</string>
+    <string name="InuNativeMediaPicker">ネイティブのメディアピッカー</string>
+    <string name="InuNativeMediaPickerInfo">すべての写真と動画へのアクセスを求めません。添付メニューは Android のピッカーを開き、選んだファイルだけが共有されます。</string>
+    <string name="InuNativeMediaPickerTitle">プライベートギャラリー</string>
+    <string name="InuNativeMediaPickerText">Telegram はあなたの写真を見ることができません。送りたいものだけを選んでください。</string>
+    <string name="InuNativeMediaPickerButton">写真と動画を選択</string>
     <string name="InuForceTranslate">強制翻訳</string>
     <string name="InuForceTranslateInfo">Telegramが自分の言語や「翻訳しない」リストと判断したテキストも翻訳します。</string>
     <string name="InuFormatting">書式設定</string>

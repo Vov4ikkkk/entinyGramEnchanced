@@ -819,6 +819,11 @@
     <string name="InuForceNoVibrationInfo">Telegram ayarlarında açık olsa bile dokunsal geri bildirimi, uygulama içi ve bildirim titreşimini kapatır.</string>
     <string name="InuForceRelayCalls">Aramaları Zorla Röleden Geçir</string>
     <string name="InuForceRelayCallsInfo">Aramalar her zaman Telegram röle sunucuları üzerinden yönlendirilir, eşler arası değil; gerçek IP\'niz gizli kalır.</string>
+    <string name="InuNativeMediaPicker">Yerel medya seçici</string>
+    <string name="InuNativeMediaPickerInfo">Tüm fotoğraf ve videolara erişim isteme. Ek menüsü Android seçicisini açar ve yalnızca seçtiğin dosyalar paylaşılır.</string>
+    <string name="InuNativeMediaPickerTitle">Özel galeri</string>
+    <string name="InuNativeMediaPickerText">Telegram fotoğraflarını göremez. Yalnızca göndermek istediklerini seç.</string>
+    <string name="InuNativeMediaPickerButton">Fotoğraf ve video seç</string>
     <string name="InuForceTranslate">Zorunlu çeviri</string>
     <string name="InuForceTranslateInfo">Telegram metnin dilinizde olduğunu düşünse veya \"Çevirme\" listesinde olsa bile çevir.</string>
     <string name="InuFormatting">Biçimlendirme</string>

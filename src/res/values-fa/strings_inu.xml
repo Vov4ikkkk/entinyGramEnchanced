@@ -818,6 +818,11 @@
     <string name="InuForceNoVibrationInfo">لرزش لمسی، لرزش درون‌برنامه و اعلان‌ها را حتی اگر در تنظیمات تلگرام روشن باشد خاموش می‌کند.</string>
     <string name="InuForceRelayCalls">اجبار تماس از طریق رله</string>
     <string name="InuForceRelayCallsInfo">تماس‌ها را از طریق سرورهای رله تلگرام و هرگز همتابههمتا هدایت می‌کند تا IP واقعی شما پنهان بماند.</string>
+    <string name="InuNativeMediaPicker">انتخابگر رسانه بومی</string>
+    <string name="InuNativeMediaPickerInfo">درخواست دسترسی به همه عکس‌ها و ویدیوها داده نمی‌شود. منوی پیوست انتخابگر اندروید را باز می‌کند و فقط فایل‌های انتخابی شما به اشتراک گذاشته می‌شوند.</string>
+    <string name="InuNativeMediaPickerTitle">گالری خصوصی</string>
+    <string name="InuNativeMediaPickerText">تلگرام عکس‌های شما را نمی‌بیند. فقط چیزی را که می‌خواهید بفرستید انتخاب کنید.</string>
+    <string name="InuNativeMediaPickerButton">انتخاب عکس و ویدیو</string>
     <string name="InuForceTranslate">اجبار ترجمه</string>
     <string name="InuForceTranslateInfo">حتی وقتی تلگرام فکر می‌کند متن به زبان شماست یا در فهرست «ترجمه نشود» است، ترجمه کن.</string>
     <string name="InuFormatting">قالب‌بندی</string>

@@ -818,6 +818,11 @@
     <string name="InuForceNoVibrationInfo">即使在 Telegram 设置中已开启，也关闭触觉反馈、应用内振动和通知振动。</string>
     <string name="InuForceRelayCalls">强制中继通话</string>
     <string name="InuForceRelayCallsInfo">通话始终经由 Telegram 中继服务器而非点对点，隐藏真实 IP。</string>
+    <string name="InuNativeMediaPicker">原生媒体选择器</string>
+    <string name="InuNativeMediaPickerInfo">不请求访问全部照片和视频。附件菜单会打开 Android 选择器，只共享你选中的文件。</string>
+    <string name="InuNativeMediaPickerTitle">私密相册</string>
+    <string name="InuNativeMediaPickerText">Telegram 无法查看你的照片。只选择你想发送的内容。</string>
+    <string name="InuNativeMediaPickerButton">选择照片和视频</string>
     <string name="InuForceTranslate">强制翻译</string>
     <string name="InuForceTranslateInfo">即使 Telegram 认为文本已是你的语言或在“不翻译”列表中，也进行翻译。</string>
     <string name="InuFormatting">格式化</string>
